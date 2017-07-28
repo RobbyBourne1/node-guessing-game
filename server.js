@@ -14,19 +14,27 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(expressValidator())
 
-console.log(words)
+// console.log(words)
 
 const chooseLetters = {
   letter: []
 }
 
 app.get('/', (request, response) => {
+  // let chooseWords = Math.floor(Math.random() * words.length)
+  // let ourWord = words[chooseWords]
+  // console.log('our random number: ' + chooseWords)
+  // console.log('our word: ' + ourWord)
+  // request.checkBody('ourWord', 'Here is  our word')
   response.render('index', { chooseLetters: chooseLetters })
 })
 
 app.post('/', (request, response) => {
   request.checkBody('letter', 'Already Tried That Letter')
-  request.checkBody('words', 'Words')
+  let chooseWords = Math.floor(Math.random() * words.length)
+  let ourWord = words[chooseWords]
+  console.log('our random number: ' + chooseWords)
+  console.log('our word: ' + ourWord)
   chooseLetters.letter.push(request.body.letter)
 
   console.log(chooseLetters)

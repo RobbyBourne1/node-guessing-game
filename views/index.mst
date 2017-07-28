@@ -9,13 +9,15 @@
       <p>Wubz Guessing Game</p>
       <p>You have ** Guesses Left</p>
     </header>
-    <div class="wrpapper">
+    <div class="wrapper">
     <form class="hangman" action="/" method="post">
       <input class= "addletter" type="text" name="letter" value="" placeholder="Letters" autofocus="on">
     </form>
-    {{#words}}
-    <p>{{.}}</p>
-    {{/words}}
+    <ul>
+    {{#ourWord}}
+    <li>{{.}}</li>
+    {{/ourWord}}
+    </ul>
     <ul>
       <p>Letters Guessed</p>
     {{#chooseLetters}}
