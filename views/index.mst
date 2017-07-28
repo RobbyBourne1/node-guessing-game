@@ -5,6 +5,11 @@
     <title></title>
   </head>
   <body>
-
+    <form class="hangman" action="/" method="post">
+      <input class= "addletter" type="text" name="letter" value="" placeholder="Letters">
+    </form>
+    {{#chooseLetters}}
+    <p>{{letter}}</p>
+    {{/chooseLetters}}
   </body>
 </html>

@@ -14,14 +14,24 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(expressValidator())
 
-//
-// const wordGuess = {
-//   letter:
-// }
+const chooseLetters = {
+  letter: []
+}
 
 app.get('/', (request, response) => {
-  response.send('Hello!!')
+  response.render('index', { chooseLetters: chooseLetters })
 })
+
+app.post('/', (request, response) => {
+  request.checkBody('letter', 'Already Tried Thar Letter')
+  chooseLetters.letter.push(request.body.letter)
+  console.log(chooseLetters)
+  response.redirect('/')
+})
+
+// app.post('/guesses/:letter', (request, response) =>{
+//
+// })
 
 app.listen(3000, () => {
   console.log('Somethings in the water!!!')

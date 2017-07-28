@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
+    "start": "clear && node server.js",
+    "watch": "clear && nodemon --config nodemon.json server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
