@@ -2,7 +2,7 @@ const express = require('express')
 const mustacheExpress = require('mustache-express')
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
-
+const words = require('./words')
 const app = express()
 
 app.engine('mst', mustacheExpress())
@@ -14,6 +14,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(expressValidator())
 
+console.log(words)
+
 const chooseLetters = {
   letter: []
 }
@@ -23,8 +25,10 @@ app.get('/', (request, response) => {
 })
 
 app.post('/', (request, response) => {
-  request.checkBody('letter', 'Already Tried Thar Letter')
+  request.checkBody('letter', 'Already Tried That Letter')
+  request.checkBody('words', 'Words')
   chooseLetters.letter.push(request.body.letter)
+
   console.log(chooseLetters)
   response.redirect('/')
 })
