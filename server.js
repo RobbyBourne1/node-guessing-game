@@ -29,7 +29,7 @@ hangMan.ourWord.push(words[chooseWords].split(''))
 console.log('our random number: ' + chooseWords)
 console.log('our word: ' + hangMan.ourWord)
 
-mysteryWord = hangMan.ourWord.map(x => {
+let mysteryWord = hangMan.ourWord.map(x => {
   return (x = '_')
 })
 
@@ -40,11 +40,11 @@ app.get('/', (request, response) => {
 })
 
 app.post('/', (request, response) => {
+  console.log(request.body.letter)
   if (hangMan.ourWord.includes(request.body.letter)) {
-    hangMan.ourWord.forEach(secretWord => {
-      if (secretWord === request.body.letter) {
-        mysteryWord.splice(secretWord, 1, request.body.letter)
-        // console.log(secretWord)
+    hangMan.ourWord.forEach(secretLetter => {
+      if (secretLetter === request.body.letter) {
+        mysteryWord.splice(secretLetter, 1, request.body.letter)
       }
     })
   } else {
