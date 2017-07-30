@@ -16,6 +16,8 @@ app.use(expressValidator())
 
 // console.log(words)
 
+let count = 8
+
 const hangMan = {
   letter: [],
   ourWord: [],
@@ -23,7 +25,7 @@ const hangMan = {
 }
 
 let chooseWords = Math.floor(Math.random() * words.length)
-hangMan.ourWord.push(words[chooseWords])
+hangMan.ourWord.push(words[chooseWords].split(''))
 console.log('our random number: ' + chooseWords)
 console.log('our word: ' + hangMan.ourWord)
 
@@ -38,17 +40,22 @@ app.get('/', (request, response) => {
 })
 
 app.post('/', (request, response) => {
-  request.checkBody('letter', 'Already Tried That Letter')
-
+  if (hangMan.ourWord.includes(request.body.letter)) {
+    hangMan.ourWord.forEach(secretWord => {
+      if (secretWord === request.body.letter) {
+        mysteryWord.splice(secretWord, 1, request.body.letter)
+        // console.log(secretWord)
+      }
+    })
+  } else {
+    count -= 1
+    console.log(count)
+  }
+  // request.checkBody('letter', 'Already Tried That Letter')
   hangMan.letter.push(request.body.letter)
-
   console.log(hangMan)
   response.redirect('/')
 })
-
-// app.post('/guesses/:letter', (request, response) =>{
-//
-// })
 
 app.listen(3000, () => {
   console.log('Somethings in the water!!!')
