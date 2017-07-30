@@ -16,28 +16,33 @@ app.use(expressValidator())
 
 // console.log(words)
 
-const chooseLetters = {
-  letter: []
+const hangMan = {
+  letter: [],
+  ourWord: [],
+  mysteryWord: []
 }
 
+let chooseWords = Math.floor(Math.random() * words.length)
+hangMan.ourWord.push(words[chooseWords])
+console.log('our random number: ' + chooseWords)
+console.log('our word: ' + hangMan.ourWord)
+
+mysteryWord = hangMan.ourWord.map(x => {
+  return (x = '_')
+})
+
+console.log(mysteryWord)
+
 app.get('/', (request, response) => {
-  // let chooseWords = Math.floor(Math.random() * words.length)
-  // let ourWord = words[chooseWords]
-  // console.log('our random number: ' + chooseWords)
-  // console.log('our word: ' + ourWord)
-  // request.checkBody('ourWord', 'Here is  our word')
-  response.render('index', { chooseLetters: chooseLetters })
+  response.render('index', { hangMan: hangMan })
 })
 
 app.post('/', (request, response) => {
   request.checkBody('letter', 'Already Tried That Letter')
-  let chooseWords = Math.floor(Math.random() * words.length)
-  let ourWord = words[chooseWords]
-  console.log('our random number: ' + chooseWords)
-  console.log('our word: ' + ourWord)
-  chooseLetters.letter.push(request.body.letter)
 
-  console.log(chooseLetters)
+  hangMan.letter.push(request.body.letter)
+
+  console.log(hangMan)
   response.redirect('/')
 })
 

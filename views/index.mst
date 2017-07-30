@@ -14,15 +14,15 @@
       <input class= "addletter" type="text" name="letter" value="" placeholder="Letters" autofocus="on">
     </form>
     <ul>
-    {{#ourWord}}
-    <li>{{.}}</li>
-    {{/ourWord}}
+    {{#hangMan}}
+    <li>{{ourWord}}</li>
+    {{/hangMan}}
     </ul>
     <ul>
       <p>Letters Guessed</p>
-    {{#chooseLetters}}
+    {{#hangMan}}
     <li>{{letter}}</li>
-    {{/chooseLetters}}
+    {{/hangMan}}
     </ul>
   </div>
   </body>
