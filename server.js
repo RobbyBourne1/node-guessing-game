@@ -38,19 +38,22 @@ app.get('/', (request, response) => {
 })
 
 app.post('/', (request, response) => {
-  console.log(request.body.letter)
-  if (hangMan.ourWord.includes(request.body.letter)) {
+  let letterGuess = request.body.letter.toLowerCase()
+
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty()
+
+  console.log(letterGuess)
+  if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.ourWord.forEach((secretLetter, index) => {
-      if (secretLetter === request.body.letter) {
-        hangMan.mysteryWord.splice(index, 1, request.body.letter)
+      if (secretLetter === letterGuess) {
+        hangMan.mysteryWord.splice(index, 1, letterGuess)
       }
     })
   } else {
     hangMan.count -= 1
-    console.log(hangMan.count)
   }
   // request.checkBody('letter', 'Already Tried That Letter')
-  hangMan.letter.push(request.body.letter)
+  hangMan.letter.push(letterGuess.toLowerCase())
   console.log(hangMan)
   response.redirect('/')
 })
