@@ -21,7 +21,8 @@ const hangMan = {
   // The word we are trying guess
   ourWord: [],
   mysteryWord: [],
-  count: 8
+  count: 8,
+  message: []
 }
 
 let chooseWords = Math.floor(Math.random() * words.length)
@@ -42,8 +43,16 @@ app.post('/', (request, response) => {
 
   request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty()
 
+  const errors = request.validationErrors()
+
+  if (errors) {
+    hangMan.message = 'Please type in a single letter'
+    hangMan.count += 1
+  }
+
   console.log(letterGuess)
   if (hangMan.ourWord.includes(letterGuess)) {
+    hangMan.message = ''
     hangMan.ourWord.forEach((secretLetter, index) => {
       if (secretLetter === letterGuess) {
         hangMan.mysteryWord.splice(index, 1, letterGuess)

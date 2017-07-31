@@ -8,6 +8,7 @@
     <header>
       <p>Wubz Guessing Game</p>
       <p>You have {{count}} Guesses Left</p>
+      <p>{{message}}</p>
     </header>
     <div class="wrapper">
     <form class="hangman" action="/" method="post">
