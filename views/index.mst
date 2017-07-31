@@ -7,22 +7,22 @@
   <body>
     <header>
       <p>Wubz Guessing Game</p>
-      <p>You have ** Guesses Left</p>
+      <p>You have {{count}} Guesses Left</p>
     </header>
     <div class="wrapper">
     <form class="hangman" action="/" method="post">
       <input class= "addletter" type="text" name="letter" value="" placeholder="Letters" autofocus="on">
     </form>
     <ul>
-    {{#hangMan}}
-    <li>{{ourWord}}</li>
-    {{/hangMan}}
+      <li>
+        {{#mysteryWord}}
+          {{.}}
+        {{/mysteryWord}}
+      </li>
     </ul>
     <ul>
       <p>Letters Guessed</p>
-    {{#hangMan}}
     <li>{{letter}}</li>
-    {{/hangMan}}
     </ul>
   </div>
   </body>

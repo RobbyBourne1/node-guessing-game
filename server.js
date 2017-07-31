@@ -16,40 +16,38 @@ app.use(expressValidator())
 
 // console.log(words)
 
-let count = 8
-
 const hangMan = {
   letter: [],
+  // The word we are trying guess
   ourWord: [],
-  mysteryWord: []
+  mysteryWord: [],
+  count: 8
 }
 
 let chooseWords = Math.floor(Math.random() * words.length)
-hangMan.ourWord.push(words[chooseWords].split(''))
-console.log('our random number: ' + chooseWords)
-console.log('our word: ' + hangMan.ourWord)
+hangMan.ourWord = words[chooseWords].split('')
+console.log('our random number: ', chooseWords)
+console.log('our word: ', hangMan.ourWord)
 
-let mysteryWord = hangMan.ourWord.map(x => {
-  return (x = '_')
-})
+hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
 
-console.log(mysteryWord)
+console.log(hangMan.mysteryWord)
 
 app.get('/', (request, response) => {
-  response.render('index', { hangMan: hangMan })
+  response.render('index', hangMan)
 })
 
 app.post('/', (request, response) => {
   console.log(request.body.letter)
   if (hangMan.ourWord.includes(request.body.letter)) {
-    hangMan.ourWord.forEach(secretLetter => {
+    hangMan.ourWord.forEach((secretLetter, index) => {
       if (secretLetter === request.body.letter) {
-        mysteryWord.splice(secretLetter, 1, request.body.letter)
+        hangMan.mysteryWord.splice(index, 1, request.body.letter)
       }
     })
   } else {
-    count -= 1
-    console.log(count)
+    hangMan.count -= 1
+    console.log(hangMan.count)
   }
   // request.checkBody('letter', 'Already Tried That Letter')
   hangMan.letter.push(request.body.letter)
