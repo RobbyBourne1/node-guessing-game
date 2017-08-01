@@ -27,7 +27,7 @@ const hangMan = {
 
 let chooseWords = Math.floor(Math.random() * words.length)
 hangMan.ourWord = words[chooseWords].split('')
-console.log('our random number: ', chooseWords)
+// console.log('our random number: ', chooseWords)
 console.log('our word: ', hangMan.ourWord)
 
 hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
@@ -53,8 +53,6 @@ app.post('/', (request, response) => {
         hangMan.mysteryWord.splice(index, 1, letterGuess)
       }
     })
-  } else if (hangMan.letter === hangMan.mysteryWord) {
-    message = 'You already Guessed that letter'
   } else {
     hangMan.message = ''
     hangMan.count -= 1
@@ -65,12 +63,11 @@ app.post('/', (request, response) => {
     hangMan.message = 'Please type in a single letter'
     hangMan.count += 1
   }
-  if (hangMan.letter === hangMan.mysteryWord) {
-    messge = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+  if (hangMan.letters === hangMan.ourWord) {
+    hangMan.messge = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
   } else if (hangMan.count <= 0) {
     hangMan.message = 'Sorry you lose'
   }
-  console.log(hangMan)
   response.redirect('/')
 })
 
