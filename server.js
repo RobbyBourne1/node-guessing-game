@@ -12,7 +12,13 @@ app.set('view engine', 'mst')
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-app.use(expressValidator())
+app.use(
+  expressValidator({
+    customValidators: {
+      sameValue: (request, response) => {}
+    }
+  })
+)
 
 // console.log(words)
 
@@ -34,6 +40,20 @@ hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
 
 console.log(hangMan.mysteryWord)
 
+app.use(
+  expressValidator({
+    customValidators: {
+      sameValue: () => {
+        hangMan.letter.forEach(character => {
+          if (character === hangMan.letter) {
+            hangMan.letter.pop()
+          }
+        })
+      }
+    }
+  })
+)
+
 app.get('/', (request, response) => {
   response.render('index', hangMan)
 })
@@ -41,7 +61,7 @@ app.get('/', (request, response) => {
 app.post('/', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
 
-  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty()
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().sameValue()
 
   const errors = request.validationErrors()
 
@@ -63,11 +83,10 @@ app.post('/', (request, response) => {
     hangMan.message = 'Please type in a single letter'
     hangMan.count += 1
   }
-  console.log('are these equal', hangMan.mysteryWord, hangMan.ourWord)
   if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
     hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
   } else if (hangMan.count <= 0) {
-    hangMan.message = 'Sorry you lose'
+    hangMan.message = `Sorry you lose, the word was ${hangMan.ourWord.join('')}`
   }
   response.redirect('/')
 })
