@@ -45,24 +45,31 @@ app.post('/', (request, response) => {
 
   const errors = request.validationErrors()
 
-  if (errors) {
-    hangMan.message = 'Please type in a single letter'
-    hangMan.count += 1
-  }
-
-  console.log(letterGuess)
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
+    hangMan.letter.push(letterGuess)
     hangMan.ourWord.forEach((secretLetter, index) => {
       if (secretLetter === letterGuess) {
         hangMan.mysteryWord.splice(index, 1, letterGuess)
       }
     })
+  } else if (hangMan.letter === hangMan.mysteryWord) {
+    message = 'You already Guessed that letter'
   } else {
+    hangMan.message = ''
     hangMan.count -= 1
+    hangMan.letter.push(letterGuess)
   }
-  // request.checkBody('letter', 'Already Tried That Letter')
-  hangMan.letter.push(letterGuess.toLowerCase())
+  if (errors) {
+    hangMan.letter.pop()
+    hangMan.message = 'Please type in a single letter'
+    hangMan.count += 1
+  }
+  if (hangMan.letter === hangMan.mysteryWord) {
+    messge = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+  } else if (hangMan.count <= 0) {
+    hangMan.message = 'Sorry you lose'
+  }
   console.log(hangMan)
   response.redirect('/')
 })
