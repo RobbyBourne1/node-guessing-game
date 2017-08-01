@@ -63,8 +63,9 @@ app.post('/', (request, response) => {
     hangMan.message = 'Please type in a single letter'
     hangMan.count += 1
   }
-  if (hangMan.letters === hangMan.ourWord) {
-    hangMan.messge = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+  console.log('are these equal', hangMan.mysteryWord, hangMan.ourWord)
+  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
+    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
   } else if (hangMan.count <= 0) {
     hangMan.message = 'Sorry you lose'
   }
