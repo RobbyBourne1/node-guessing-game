@@ -23,7 +23,7 @@ app.use(
 // console.log(words)
 
 const hangMan = {
-  letter: ['r', 's', 't', 'l', 'n', 'e'],
+  letter: ['r', 'l', 'a', 'e'],
   // The word we are trying guess
   ourWord: [],
   mysteryWord: [],
@@ -42,8 +42,6 @@ console.log('our word: ', hangMan.ourWord)
 
 hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
 
-console.log(hangMan.mysteryWord)
-
 app.use(
   expressValidator({
     customValidators: {
@@ -51,28 +49,15 @@ app.use(
         // param is the incoming
         // options is an object that has other params inside of it
         //return t/f
-      },
-      sameValue: () => {
-        hangMan.letter.forEach(character => {
-          if (character === hangMan.letter) {
-            hangMan.letter.pop()
-          }
-        })
+        if (options.indexOf(param) <= 0) {
+          return '_'
+        }
       }
     }
   })
 )
 
 app.get('/', (request, response) => {
-  // hangMan.letter.forEach((secretLetter, index) => {
-  //   console.log(hangMan.ourWord)
-  //   console.log(hangMan.letter)
-  //   if (hangMan.ourWord.includes(secretLetter)) {
-  //     hangMan.mysteryWord.splice(index, 1, secretLetter)
-  //     console.log(hangMan.mysteryWord)
-  //   }
-  // })
-
   hangMan.mysteryWord = hangMan.ourWord.map(letter => {
     if (hangMan.letter.indexOf(letter) >= 0) {
       return letter
@@ -80,7 +65,11 @@ app.get('/', (request, response) => {
       return '_'
     }
   })
-
+  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
+    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+  } else if (hangMan.count <= 0) {
+    hangMan.message = `Sorry you lose, the word was ${hangMan.ourWord.join('').toUpperCase()}`
+  }
   hangMan.letter.sort()
   response.render('index', hangMan)
 })
@@ -91,17 +80,6 @@ app.post('/', (request, response) => {
   request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
 
   const errors = request.validationErrors()
-
-  console.log(hangMan.letter)
-
-  // hangMan.letter.forEach((secretLetter, index) => {
-  //   console.log(hangMan.ourWord)
-  //   console.log(hangMan.letter)
-  //   if (hangMan.ourWord.includes(secretLetter)) {
-  //     hangMan.mysteryWord.splice(index, 1, secretLetter)
-  //     console.log(hangMan.mysteryWord)
-  //   }
-  // })
 
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
@@ -120,12 +98,10 @@ app.post('/', (request, response) => {
     hangMan.letter.pop()
     hangMan.message = 'Please type in a single letter'
     hangMan.count += 1
+    console.log(hangMan.letter)
+    console.log(hangMan.mysteryWord)
   }
-  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
-    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
-  } else if (hangMan.count <= 0) {
-    hangMan.message = `Sorry you lose, the word was ${hangMan.ourWord.join('')}`
-  }
+
   response.redirect('/')
 })
 
