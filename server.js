@@ -23,13 +23,19 @@ app.use(
 // console.log(words)
 
 const hangMan = {
-  letter: [],
+  letter: ['r', 's', 't', 'l', 'n', 'e'],
   // The word we are trying guess
   ourWord: [],
   mysteryWord: [],
   count: 8,
   message: []
 }
+
+// let easyWords = words.filter(word => words.length <= 6)
+// let mediumWords = words.filter(word => words.length > 6 && words.length <= 8)
+// let hardWords = words.filter(word => words.length > 8)
+//
+// console.log(easyWords)
 
 let chooseWords = Math.floor(Math.random() * words.length)
 hangMan.ourWord = words[chooseWords].split('')
@@ -40,19 +46,19 @@ hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
 
 console.log(hangMan.mysteryWord)
 
-app.use(
-  expressValidator({
-    customValidators: {
-      sameValue: () => {
-        hangMan.letter.forEach(character => {
-          if (character === hangMan.letter) {
-            hangMan.letter.pop()
-          }
-        })
-      }
-    }
-  })
-)
+// app.use(
+//   expressValidator({
+//     customValidators: {
+//       sameValue: () => {
+//         hangMan.letter.forEach(character => {
+//           if (character === hangMan.letter) {
+//             hangMan.letter.pop()
+//           }
+//         })
+//       }
+//     }
+//   })
+// )
 
 app.get('/', (request, response) => {
   response.render('index', hangMan)
@@ -61,9 +67,17 @@ app.get('/', (request, response) => {
 app.post('/', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
 
-  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().sameValue()
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty()
 
   const errors = request.validationErrors()
+
+  console.log(hangMan.letter)
+
+  hangMan.ourWord.forEach((secretLetter, index) => {
+    if (secretLetter === hangMan.letter) {
+      hangMan.mysteryWord.splice(index, 1, hangMan.letter)
+    }
+  })
 
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
