@@ -31,11 +31,9 @@ const hangMan = {
   message: []
 }
 
-// let easyWords = words.filter(word => words.length <= 6)
-// let mediumWords = words.filter(word => words.length > 6 && words.length <= 8)
-// let hardWords = words.filter(word => words.length > 8)
-//
-// console.log(easyWords)
+let easyWords = words.filter(word => word.length <= 6)
+let mediumWords = words.filter(word => word.length > 6 && word.length <= 8)
+let hardWords = words.filter(word => word.length > 8)
 
 let chooseWords = Math.floor(Math.random() * words.length)
 hangMan.ourWord = words[chooseWords].split('')
@@ -46,44 +44,70 @@ hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
 
 console.log(hangMan.mysteryWord)
 
-// app.use(
-//   expressValidator({
-//     customValidators: {
-//       sameValue: () => {
-//         hangMan.letter.forEach(character => {
-//           if (character === hangMan.letter) {
-//             hangMan.letter.pop()
-//           }
-//         })
-//       }
-//     }
-//   })
-// )
+app.use(
+  expressValidator({
+    customValidators: {
+      duplicate: (param, options) => {
+        // param is the incoming
+        // options is an object that has other params inside of it
+        //return t/f
+      },
+      sameValue: () => {
+        hangMan.letter.forEach(character => {
+          if (character === hangMan.letter) {
+            hangMan.letter.pop()
+          }
+        })
+      }
+    }
+  })
+)
 
 app.get('/', (request, response) => {
+  // hangMan.letter.forEach((secretLetter, index) => {
+  //   console.log(hangMan.ourWord)
+  //   console.log(hangMan.letter)
+  //   if (hangMan.ourWord.includes(secretLetter)) {
+  //     hangMan.mysteryWord.splice(index, 1, secretLetter)
+  //     console.log(hangMan.mysteryWord)
+  //   }
+  // })
+
+  hangMan.mysteryWord = hangMan.ourWord.map(letter => {
+    if (hangMan.letter.indexOf(letter) >= 0) {
+      return letter
+    } else {
+      return '_'
+    }
+  })
+
+  hangMan.letter.sort()
   response.render('index', hangMan)
 })
 
 app.post('/', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
 
-  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty()
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
 
   const errors = request.validationErrors()
 
   console.log(hangMan.letter)
 
-  hangMan.ourWord.forEach((secretLetter, index) => {
-    if (secretLetter === hangMan.letter) {
-      hangMan.mysteryWord.splice(index, 1, hangMan.letter)
-    }
-  })
+  // hangMan.letter.forEach((secretLetter, index) => {
+  //   console.log(hangMan.ourWord)
+  //   console.log(hangMan.letter)
+  //   if (hangMan.ourWord.includes(secretLetter)) {
+  //     hangMan.mysteryWord.splice(index, 1, secretLetter)
+  //     console.log(hangMan.mysteryWord)
+  //   }
+  // })
 
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
     hangMan.letter.push(letterGuess)
     hangMan.ourWord.forEach((secretLetter, index) => {
-      if (secretLetter === letterGuess) {
+      if (hangMan.ourWord === hangMan.letter) {
         hangMan.mysteryWord.splice(index, 1, letterGuess)
       }
     })
