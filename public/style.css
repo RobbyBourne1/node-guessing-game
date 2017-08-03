@@ -1,3 +1,68 @@
+.wrapper {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body {
+  margin: 0;
+}
+
+header {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  background-color: #cacfd2;
+  width: 100%;
+}
+
+h1,
+h2,
+p {
+  font-size: 1.5em;
+  color: #3498db;
+}
+
+.formList {
+  background-color: #3498db;
+  width: 100%;
+  color: #bdc3c7;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+input {
+  background-color: #bdc3c7;
+  color: #3498db;
+}
+
+::-webkit-input-placeholder {
+  color: #3498db;
+}
+
+p {
+  padding: 0;
+}
+
+.message {
+  color: red;
+}
+
+ul {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  padding: 0;
+}
+
 li {
   text-transform: uppercase;
+}
+
+ul {
+  list-style: none;
 }

@@ -49,7 +49,7 @@ app.use(
         // param is the incoming
         // options is an object that has other params inside of it
         //return t/f
-        if (options.indexOf(param) <= 0) {
+        if (options.indexOf(param) < 0) {
           return '_'
         }
       }
@@ -70,7 +70,6 @@ app.get('/', (request, response) => {
   } else if (hangMan.count <= 0) {
     hangMan.message = `Sorry you lose, the word was ${hangMan.ourWord.join('').toUpperCase()}`
   }
-  hangMan.letter.sort()
   response.render('index', hangMan)
 })
 
@@ -97,7 +96,6 @@ app.post('/', (request, response) => {
   if (errors) {
     hangMan.letter.pop()
     hangMan.message = 'Please type in a single letter'
-    hangMan.count += 1
     console.log(hangMan.letter)
     console.log(hangMan.mysteryWord)
   }
