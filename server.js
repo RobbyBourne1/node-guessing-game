@@ -68,7 +68,7 @@ app.get('/', (request, response) => {
   if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
     hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
   } else if (hangMan.count <= 0) {
-    hangMan.message = `Sorry you lose, the word was ${hangMan.ourWord.join('').toUpperCase()}`
+    hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
   }
   response.render('index', hangMan)
 })
