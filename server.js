@@ -37,7 +37,6 @@ let hardWords = words.filter(word => word.length > 8)
 
 let chooseWords = Math.floor(Math.random() * words.length)
 hangMan.ourWord = words[chooseWords].split('')
-// console.log('our random number: ', chooseWords)
 console.log('our word: ', hangMan.ourWord)
 
 hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
@@ -46,9 +45,6 @@ app.use(
   expressValidator({
     customValidators: {
       duplicate: (param, options) => {
-        // param is the incoming
-        // options is an object that has other params inside of it
-        //return t/f
         if (options.indexOf(param) < 0) {
           return '_'
         }
@@ -80,6 +76,14 @@ app.post('/', (request, response) => {
 
   const errors = request.validationErrors()
 
+  if (errors) {
+    hangMan.message = 'Please type in a single letter'
+
+    response.redirect('/')
+
+    return
+  }
+
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
     hangMan.letter.push(letterGuess)
@@ -92,12 +96,6 @@ app.post('/', (request, response) => {
     hangMan.message = ''
     hangMan.count -= 1
     hangMan.letter.push(letterGuess)
-  }
-  if (errors) {
-    hangMan.letter.pop()
-    hangMan.message = 'Please type in a single letter'
-    console.log(hangMan.letter)
-    console.log(hangMan.mysteryWord)
   }
 
   response.redirect('/')
