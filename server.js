@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const words = require('./words')
 const app = express()
+const expressSession = require('express-session')
 
 app.engine('mst', mustacheExpress())
 app.set('views', './views')
@@ -12,15 +13,14 @@ app.set('view engine', 'mst')
 app.use(express.static('public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+
 app.use(
-  expressValidator({
-    customValidators: {
-      sameValue: (request, response) => {}
-    }
+  expressSession({
+    secret: 'Keyboard Cat',
+    resave: false,
+    saveUninitialized: true
   })
 )
-
-// console.log(words)
 
 const hangMan = {
   letter: ['r', 'l', 'a', 'e'],
