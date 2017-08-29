@@ -59,7 +59,7 @@ app.get('/', (request, response) => {
   response.render('Index', hangMan)
 })
 
-app.get('/EasyMode', (request, response) => {
+const gameGet = game => {
   hangMan.mysteryWord = hangMan.ourWord.map(letter => {
     if (hangMan.letter.indexOf(letter) >= 0) {
       return letter
@@ -72,54 +72,52 @@ app.get('/EasyMode', (request, response) => {
   } else if (hangMan.count <= 0) {
     hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
   }
+}
+
+const gamePost = game => {
+
+    if (hangMan.ourWord.includes(letterGuess)) {
+      hangMan.message = ''
+      hangMan.letter.push(letterGuess)
+      hangMan.ourWord.forEach((secretLetter, index) => {
+        if (hangMan.ourWord === hangMan.letter) {
+          hangMan.mysteryWord.splice(index, 1, letterGuess)
+        }
+      })
+    } else {
+      hangMan.message = ''
+      hangMan.count -= 1
+      hangMan.letter.push(letterGuess)
+    }
+}
+
+
+
+app.get('/EasyMode', (request, response) => {
+  gameGet()
   response.render('EasyMode', hangMan)
 })
 
 app.post('/EasyMode', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
-
-  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
-
-  const errors = request.validationErrors()
-
-if (errors) {
-    hangMan.message = 'Please type in a single letter'
-
-    response.redirect('/')
-
-    return
-  }
-
-  if (hangMan.ourWord.includes(letterGuess)) {
-    hangMan.message = ''
-    hangMan.letter.push(letterGuess)
-    hangMan.ourWord.forEach((secretLetter, index) => {
-      if (hangMan.ourWord === hangMan.letter) {
-        hangMan.mysteryWord.splice(index, 1, letterGuess)
-      }
-    })
-  } else {
-    hangMan.message = ''
-    hangMan.count -= 1
-    hangMan.letter.push(letterGuess)
-  }
-
+  
+    request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
+  
+    const errors = request.validationErrors()
+  
+    if (errors) {
+      hangMan.message = 'Please type in a single letter'
+  
+      response.redirect('/EasyMode')
+  
+      return
+    }
+  gamePost()
   response.redirect('/EasyMode')
 })
 
 app.get('/MediumMode', (request, response) => {
-  hangMan.mysteryWord = hangMan.ourWord.map(letter => {
-    if (hangMan.letter.indexOf(letter) >= 0) {
-      return letter
-    } else {
-      return '_'
-    }
-  })
-  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
-    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
-  } else if (hangMan.count <= 0) {
-    hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
-  }
+  gameGet()
   response.render('MediumMode', hangMan)
 })
 
@@ -130,7 +128,7 @@ app.post('/EasyMode', (request, response) => {
 
   const errors = request.validationErrors()
 
-if (errors) {
+  if (errors) {
     hangMan.message = 'Please type in a single letter'
 
     response.redirect('/MediumMode')
@@ -156,18 +154,7 @@ if (errors) {
 })
 
 app.get('/HardMode', (request, response) => {
-  hangMan.mysteryWord = hangMan.ourWord.map(letter => {
-    if (hangMan.letter.indexOf(letter) >= 0) {
-      return letter
-    } else {
-      return '_'
-    }
-  })
-  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
-    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
-  } else if (hangMan.count <= 0) {
-    hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
-  }
+  gameGet()
   response.render('HardMode', hangMan)
 })
 
@@ -178,7 +165,7 @@ app.post('/HardMode', (request, response) => {
 
   const errors = request.validationErrors()
 
-if (errors) {
+  if (errors) {
     hangMan.message = 'Please type in a single letter'
 
     response.redirect('/HardMode')
