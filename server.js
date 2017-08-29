@@ -76,19 +76,6 @@ const gameGet = game => {
 
 const gamePost = game => {
 
-    if (hangMan.ourWord.includes(letterGuess)) {
-      hangMan.message = ''
-      hangMan.letter.push(letterGuess)
-      hangMan.ourWord.forEach((secretLetter, index) => {
-        if (hangMan.ourWord === hangMan.letter) {
-          hangMan.mysteryWord.splice(index, 1, letterGuess)
-        }
-      })
-    } else {
-      hangMan.message = ''
-      hangMan.count -= 1
-      hangMan.letter.push(letterGuess)
-    }
 }
 
 
@@ -112,7 +99,20 @@ app.post('/EasyMode', (request, response) => {
   
       return
     }
-  gamePost()
+
+    if (hangMan.ourWord.includes(letterGuess)) {
+      hangMan.message = ''
+      hangMan.letter.push(letterGuess)
+      hangMan.ourWord.forEach((secretLetter, index) => {
+        if (hangMan.ourWord === hangMan.letter) {
+          hangMan.mysteryWord.splice(index, 1, letterGuess)
+        }
+      })
+    } else {
+      hangMan.message = ''
+      hangMan.count -= 1
+      hangMan.letter.push(letterGuess)
+    }
   response.redirect('/EasyMode')
 })
 
