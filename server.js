@@ -41,6 +41,8 @@ console.log('our word: ', hangMan.ourWord)
 
 hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
 
+console.log('our word: ', hangMan.mysteryWord)
+
 app.use(
   expressValidator({
     customValidators: {
@@ -76,7 +78,7 @@ app.post('/', (request, response) => {
 
   const errors = request.validationErrors()
 
-  if (errors) {
+if (errors) {
     hangMan.message = 'Please type in a single letter'
 
     response.redirect('/')
@@ -101,6 +103,6 @@ app.post('/', (request, response) => {
   response.redirect('/')
 })
 
-app.listen(3001, () => {
+app.listen(3000, () => {
   console.log('Somethings in the water!!!')
 })
