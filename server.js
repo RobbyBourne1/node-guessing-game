@@ -56,6 +56,10 @@ app.use(
 )
 
 app.get('/', (request, response) => {
+  response.render('Index', hangMan)
+})
+
+app.get('/EasyMode', (request, response) => {
   hangMan.mysteryWord = hangMan.ourWord.map(letter => {
     if (hangMan.letter.indexOf(letter) >= 0) {
       return letter
@@ -68,10 +72,10 @@ app.get('/', (request, response) => {
   } else if (hangMan.count <= 0) {
     hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
   }
-  response.render('index', hangMan)
+  response.render('EasyMode', hangMan)
 })
 
-app.post('/', (request, response) => {
+app.post('/EasyMode', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
 
   request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
@@ -100,7 +104,7 @@ if (errors) {
     hangMan.letter.push(letterGuess)
   }
 
-  response.redirect('/')
+  response.redirect('/EasyMode')
 })
 
 app.listen(3000, () => {

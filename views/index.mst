@@ -11,24 +11,18 @@
  <div class="wrapper">
   <header>
     <h1>Wubz Guessing Game</h1>
-    <h2>You have {{count}} Guesses Left</h2>
-    <p class="message">{{message}}</p>
+    
   </header>
   <div class="formList">
-    <ul>
-      <li class="wordGuess">
-        {{#mysteryWord}}
-          {{.}}
-        {{/mysteryWord}}
-      </li>
-    </ul>
-    <form class="hangman" action="/" method="post">
-      <input class="addletter" type="text" name="letter" placeholder="Letters" autofocus="on">
+    <form action="/EasyMode" method="get">
+    <button>Easy Mode</button>
     </form>
-    <ul>
-      <h3>Letters Guessed:</h3>
-      <li>{{letter}}</li>
-    </ul>
+    <form action="/MediumMode" method="get">
+    <button>Medium Mode</button>
+    </form>
+    <form action="/HardMode" method="get">
+    <button>Hard Mode</button>
+    </form>
   </div>
   </div>
 </body>

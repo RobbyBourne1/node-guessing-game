@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <title></title>
+</head>
+
+<body>
+ <div class="wrapper">
+  <header>
+    <h1>Wubz Guessing Game</h1>
+    <h2>You have {{count}} Guesses Left</h2>
+    <p class="message">{{message}}</p>
+  </header>
+  <div class="formList">
+    <ul>
+      <li class="wordGuess">
+        {{#mysteryWord}}
+          {{.}}
+        {{/mysteryWord}}
+      </li>
+    </ul>
+    <form class="hangman" action="/MediumMode" method="Post">
+      <input class="addletter" type="text" name="letter" placeholder="Letters" autofocus="on">
+    </form>
+    <ul>
+      <h3>Letters Guessed:</h3>
+      <li>{{letter}}</li>
+    </ul>
+  </div>
+  </div>
+</body>
+
+</html>
