@@ -107,6 +107,102 @@ if (errors) {
   response.redirect('/EasyMode')
 })
 
+app.get('/MediumMode', (request, response) => {
+  hangMan.mysteryWord = hangMan.ourWord.map(letter => {
+    if (hangMan.letter.indexOf(letter) >= 0) {
+      return letter
+    } else {
+      return '_'
+    }
+  })
+  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
+    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+  } else if (hangMan.count <= 0) {
+    hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
+  }
+  response.render('MediumMode', hangMan)
+})
+
+app.post('/EasyMode', (request, response) => {
+  let letterGuess = request.body.letter.toLowerCase()
+
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
+
+  const errors = request.validationErrors()
+
+if (errors) {
+    hangMan.message = 'Please type in a single letter'
+
+    response.redirect('/MediumMode')
+
+    return
+  }
+
+  if (hangMan.ourWord.includes(letterGuess)) {
+    hangMan.message = ''
+    hangMan.letter.push(letterGuess)
+    hangMan.ourWord.forEach((secretLetter, index) => {
+      if (hangMan.ourWord === hangMan.letter) {
+        hangMan.mysteryWord.splice(index, 1, letterGuess)
+      }
+    })
+  } else {
+    hangMan.message = ''
+    hangMan.count -= 1
+    hangMan.letter.push(letterGuess)
+  }
+
+  response.redirect('/MediumMode')
+})
+
+app.get('/HardMode', (request, response) => {
+  hangMan.mysteryWord = hangMan.ourWord.map(letter => {
+    if (hangMan.letter.indexOf(letter) >= 0) {
+      return letter
+    } else {
+      return '_'
+    }
+  })
+  if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
+    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+  } else if (hangMan.count <= 0) {
+    hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
+  }
+  response.render('HardMode', hangMan)
+})
+
+app.post('/HardMode', (request, response) => {
+  let letterGuess = request.body.letter.toLowerCase()
+
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
+
+  const errors = request.validationErrors()
+
+if (errors) {
+    hangMan.message = 'Please type in a single letter'
+
+    response.redirect('/HardMode')
+
+    return
+  }
+
+  if (hangMan.ourWord.includes(letterGuess)) {
+    hangMan.message = ''
+    hangMan.letter.push(letterGuess)
+    hangMan.ourWord.forEach((secretLetter, index) => {
+      if (hangMan.ourWord === hangMan.letter) {
+        hangMan.mysteryWord.splice(index, 1, letterGuess)
+      }
+    })
+  } else {
+    hangMan.message = ''
+    hangMan.count -= 1
+    hangMan.letter.push(letterGuess)
+  }
+
+  response.redirect('/HardMode')
+})
+
 app.listen(3000, () => {
   console.log('Somethings in the water!!!')
 })
