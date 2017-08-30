@@ -134,6 +134,7 @@ app.post('/Attempt', (request, response) => {
     })
   } else {
     hangMan.message = []
+    hangMan.messages.pop()
     hangMan.count -= 1
     hangMan.letter.push(letterGuess)
   }
