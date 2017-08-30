@@ -22,15 +22,6 @@ app.use(
   })
 )
 
-const hangMan = {
-  letter: ['r', 'l', 'a', 'e'],
-  // The word we are trying guess
-  ourWord: [],
-  mysteryWord: [],
-  count: 8,
-  message: []
-}
-
 app.use(
   expressValidator({
     customValidators: {
@@ -43,37 +34,32 @@ app.use(
   })
 )
 
-const getEasyWord = word => {
-  let easyWords = words.filter(word => word.length > 3 && word.length < 6)
-  let chooseWords = Math.floor(Math.random() * easyWords.length)
-  hangMan.ourWord = easyWords[chooseWords].split('')
-  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
-  console.log('our word: ', hangMan.ourWord)
-  console.log('our word: ', hangMan.mysteryWord)
+const resetHangman = (hangMan) => {
+  hangMan.letter = ['r', 'l', 'a', 'e']
+  // The word we are trying guess
+  hangMan.ourWord = []
+  hangMan.mysteryWord = []
+  hangMan.count = 8
+  hangMan.messages = []
 }
 
-const getMediumWord = word => {
-  let mediumWords = words.filter(word => word.length >= 6 && word.length < 8)
-  let chooseWords = Math.floor(Math.random() * mediumWords.length)
-  hangMan.ourWord = mediumWords[chooseWords].split('')
+const getWordBetweenLengths = (hangMan, low, high) => {
+  let filteredWords = words.filter(word => word.length > low && word.length < high)
+  let chooseWords = Math.floor(Math.random() * filteredWords.length)
+  hangMan.ourWord = filteredWords[chooseWords].split('')
   hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
-  console.log('our word: ', hangMan.ourWord)
-}
+  console.log('word we are trying to guess: ', hangMan.ourWord)
+  console.log('players word so far: ', hangMan.mysteryWord)
 
-const getHardWord = word => {
-  let hardWords = words.filter(word => word.length > 8)
-  let chooseWords = Math.floor(Math.random() * hardWords.length)
-  hangMan.ourWord = hardWords[chooseWords].split('')
-  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
-  console.log('our word: ', hangMan.ourWord)
-  console.log('our word: ', hangMan.mysteryWord)
-}
+} 
 
 app.get('/', (request, response) => {
-  response.render('Index', hangMan)
+  request.session.hangMan = {}
+
+  response.render('Index', request.session.hangMan)
 })
 
-const gameGet = game => {
+const gameGet = (hangMan, game) => {
   hangMan.mysteryWord = hangMan.ourWord.map(letter => {
     if (hangMan.letter.indexOf(letter) >= 0) {
       return letter
@@ -82,58 +68,76 @@ const gameGet = game => {
     }
   })
   if (hangMan.mysteryWord.join('') === hangMan.ourWord.join('')) {
-    hangMan.message = 'Hooray you won!!!! You are the BOMB DIGGITY!!!'
+    hangMan.messages = ['Hooray you won!!!! You are the BOMB DIGGITY!!!']
   } else if (hangMan.count <= 0) {
-    hangMan.message = `Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`
+    hangMan.messages = [`Sorry you lose, the word was "${hangMan.ourWord.join('').toUpperCase()}"`]
   }
 }
 
 app.get('/EasyMode', (request, response) => {
-  getEasyWord()
-  console.log(hangMan.mysteryWord)
-  gameGet()
-  response.render('game', hangMan)
+  const hangMan = request.session.hangMan
+
+  resetHangman(hangMan)
+  getWordBetweenLengths(hangMan, 3, 5)
+  response.redirect('/Play')
 })
 
 app.get('/MediumMode', (request, response) => {
-  getMediumWord()
-  gameGet()
-  response.render('game', hangMan)
+  const hangMan = request.session.hangMan
+
+  resetHangman(hangMan)
+  getWordBetweenLengths(hangMan, 6, 8)
+  response.redirect('/Play')
 })
 
 app.get('/HardMode', (request, response) => {
-  getHardWord()
-  gameGet()
-  response.render('game', hangMan)
+  const hangMan = request.session.hangMan
+
+  resetHangman(hangMan)
+  getWordBetweenLengths(hangMan, 9, 14)
+  response.redirect('/Play')
+})
+
+app.get('/Play', (request, response) => {
+  const hangMan = request.session.hangMan
+  
+  gameGet(hangMan)
+  response.render('Game', hangMan)  
 })
 
 app.post('/Attempt', (request, response) => {
+  const hangMan = request.session.hangMan
+
   let letterGuess = request.body.letter.toLowerCase()
-  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
+  request.checkBody('letter', 'Please guess a letter').isAlpha()
+  request.checkBody('letter', 'Please guess a single letter').isLength(1, 1)
+  request.checkBody('letter', 'You have not guesses a letter').notEmpty()
+  request.checkBody('letter', 'You have already guessed that letter').duplicate(hangMan.letter)
 
   const errors = request.validationErrors()
 
   if (errors) {
-    hangMan.message = 'Please type in a single letter'
+    hangMan.messages = errors.map(error => error.msg)
 
-    response.render('Game', hangMan)
+    response.redirect('/Play')
     return
   }
 
-  if (hangMan.ourWord.includes(letterGuess)) {
-    hangMan.message = ''
+  if (request.session.hangMan.ourWord.includes(letterGuess)) {
+    hangMan.message = []
     hangMan.letter.push(letterGuess)
+    hangMan.messages.pop()
     hangMan.ourWord.forEach((secretLetter, index) => {
       if (hangMan.ourWord === hangMan.letter) {
         hangMan.mysteryWord.splice(index, 1, letterGuess)
       }
     })
   } else {
-    hangMan.message = ''
+    hangMan.message = []
     hangMan.count -= 1
     hangMan.letter.push(letterGuess)
   }
-  response.render('Game', hangMan)
+  response.redirect('/Play')
 })
 
 

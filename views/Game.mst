@@ -12,7 +12,10 @@
   <header>
     <h1>Wubz Guessing Game</h1>
     <h2>You have {{count}} Guesses Left</h2>
-    <p class="message">{{message}}</p>
+    <ul>
+    {{#messages}}
+    <li class="message">{{.}}</li>
+    {{/messages}}
   </header>
   <div class="formList">
     <ul>
