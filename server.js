@@ -34,7 +34,7 @@ app.use(
   })
 )
 
-const resetHangman = (hangMan) => {
+let resetHangman = (hangMan) => {
   hangMan.letter = ['r', 'l', 'a', 'e']
   // The word we are trying guess
   hangMan.ourWord = []
@@ -100,7 +100,7 @@ app.get('/HardMode', (request, response) => {
 
 app.get('/Play', (request, response) => {
   const hangMan = request.session.hangMan
-  
+
   gameGet(hangMan)
   response.render('Game', hangMan)  
 })
