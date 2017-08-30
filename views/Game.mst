@@ -22,7 +22,7 @@
         {{/mysteryWord}}
       </li>
     </ul>
-    <form class="hangman" action="/HardMode" method="Post">
+    <form class="hangman" action="/Attempt" method="Post">
       <input class="addletter" type="text" name="letter" placeholder="Letters" autofocus="on">
     </form>
     <ul>
