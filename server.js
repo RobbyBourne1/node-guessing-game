@@ -31,16 +31,6 @@ const hangMan = {
   message: []
 }
 
-let easyWords = words.filter(word => word.length <= 6)
-let mediumWords = words.filter(word => word.length > 6 && word.length <= 8)
-let hardWords = words.filter(word => word.length > 8)
-
-
-
-
-
-
-
 console.log('our word: ', hangMan.mysteryWord)
 
 app.use(
@@ -55,8 +45,30 @@ app.use(
   })
 )
 
+const getEasyWord = word => {
+  let easyWords = words.filter(word => word.length > 3 && word.length < 6)
+  let chooseWords = Math.floor(Math.random() * easyWords.length)
+  hangMan.ourWord = easyWords[chooseWords].split('')
+  console.log('our word: ', hangMan.ourWord)
+}
+
+const getMediumWord = word => {
+  let mediumWords = words.filter(word => word.length >= 6 && word.length < 8)
+  let chooseWords = Math.floor(Math.random() * mediumWords.length)
+  hangMan.ourWord = mediumWords[chooseWords].split('')
+  console.log('our word: ', hangMan.ourWord)
+}
+
+const getHardWord = word => {
+  let hardWords = words.filter(word => word.length > 8)
+  let chooseWords = Math.floor(Math.random() * hardWords.length)
+  hangMan.ourWord = hardWords[chooseWords].split('')
+  console.log('our word: ', hangMan.ourWord)
+}
+
+hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
+
 app.get('/', (request, response) => {
-  
   response.render('Index', hangMan)
 })
 
@@ -82,59 +94,54 @@ const gamePost = game => {
 
 
 app.get('/EasyMode', (request, response) => {
-  let chooseWords = Math.floor(Math.random() * easyWords.length)
-  hangMan.ourWord = easyWords[chooseWords].split('')
-  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
-  console.log('our word: ', hangMan.ourWord)
+  getEasyWord()
   gameGet()
-  response.render('EasyMode', hangMan)
+  response.render('game', hangMan)
 })
 
 app.post('/EasyMode', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
-  
-    request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
-  
-    const errors = request.validationErrors()
-  
-    if (errors) {
-      hangMan.message = 'Please type in a single letter'
-  
-      response.redirect('/EasyMode')
-  
-      return
-    }
+  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
 
-    if (hangMan.ourWord.includes(letterGuess)) {
-      hangMan.message = ''
-      hangMan.letter.push(letterGuess)
-      hangMan.ourWord.forEach((secretLetter, index) => {
-        if (hangMan.ourWord === hangMan.letter) {
-          hangMan.mysteryWord.splice(index, 1, letterGuess)
-        }
-      })
-    } else {
-      hangMan.message = ''
-      hangMan.count -= 1
-      hangMan.letter.push(letterGuess)
-    }
+  const errors = request.validationErrors()
+
+  if (errors) {
+    hangMan.message = 'Please type in a single letter'
+
+    response.redirect('/EasyMode')
+
+    return
+  }
+
+  if (hangMan.ourWord.includes(letterGuess)) {
+    hangMan.message = ''
+    hangMan.letter.push(letterGuess)
+    hangMan.ourWord.forEach((secretLetter, index) => {
+      if (hangMan.ourWord === hangMan.letter) {
+        hangMan.mysteryWord.splice(index, 1, letterGuess)
+      }
+    })
+  } else {
+    hangMan.message = ''
+    hangMan.count -= 1
+    hangMan.letter.push(letterGuess)
+  }
   response.redirect('/EasyMode')
 })
 
 app.get('/MediumMode', (request, response) => {
-  let chooseWords = Math.floor(Math.random() * mediumWords.length)
-  hangMan.ourWord = mediumWords[chooseWords].split('')
-  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
-  console.log('our word: ', hangMan.ourWord)
+  getMediumWord()
   gameGet()
-  response.render('MediumMode', hangMan)
+  response.render('game', hangMan)
 })
 
-app.post('/EasyMode', (request, response) => {
+app.post('/MediumMode', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
-
-  request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
-
+  request.checkBody('letter', 'Please guess a letter')
+  .isAlpha()
+  .isLength(1, 1)
+  .notEmpty()
+  .duplicate(hangMan.letter)
   const errors = request.validationErrors()
 
   if (errors) {
@@ -144,7 +151,6 @@ app.post('/EasyMode', (request, response) => {
 
     return
   }
-
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
     hangMan.letter.push(letterGuess)
@@ -163,21 +169,15 @@ app.post('/EasyMode', (request, response) => {
 })
 
 app.get('/HardMode', (request, response) => {
-  let chooseWords = Math.floor(Math.random() * hardWords.length)
-  hangMan.ourWord = hardWords[chooseWords].split('')
-  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
-  console.log('our word: ', hangMan.ourWord)
+  getHardWord()
   gameGet()
-  response.render('HardMode', hangMan)
+  response.render('game', hangMan)
 })
 
 app.post('/HardMode', (request, response) => {
   let letterGuess = request.body.letter.toLowerCase()
-
   request.checkBody('letter', 'Please guess a letter').isAlpha().isLength(1, 1).notEmpty().duplicate(hangMan.letter)
-
   const errors = request.validationErrors()
-
   if (errors) {
     hangMan.message = 'Please type in a single letter'
 
@@ -185,7 +185,6 @@ app.post('/HardMode', (request, response) => {
 
     return
   }
-
   if (hangMan.ourWord.includes(letterGuess)) {
     hangMan.message = ''
     hangMan.letter.push(letterGuess)
@@ -199,7 +198,6 @@ app.post('/HardMode', (request, response) => {
     hangMan.count -= 1
     hangMan.letter.push(letterGuess)
   }
-
   response.redirect('/HardMode')
 })
 
