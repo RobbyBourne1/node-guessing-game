@@ -35,11 +35,11 @@ let easyWords = words.filter(word => word.length <= 6)
 let mediumWords = words.filter(word => word.length > 6 && word.length <= 8)
 let hardWords = words.filter(word => word.length > 8)
 
-let chooseWords = Math.floor(Math.random() * words.length)
-hangMan.ourWord = words[chooseWords].split('')
-console.log('our word: ', hangMan.ourWord)
 
-hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
+
+
+
+
 
 console.log('our word: ', hangMan.mysteryWord)
 
@@ -56,6 +56,7 @@ app.use(
 )
 
 app.get('/', (request, response) => {
+  
   response.render('Index', hangMan)
 })
 
@@ -81,6 +82,10 @@ const gamePost = game => {
 
 
 app.get('/EasyMode', (request, response) => {
+  let chooseWords = Math.floor(Math.random() * easyWords.length)
+  hangMan.ourWord = easyWords[chooseWords].split('')
+  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
+  console.log('our word: ', hangMan.ourWord)
   gameGet()
   response.render('EasyMode', hangMan)
 })
@@ -117,6 +122,10 @@ app.post('/EasyMode', (request, response) => {
 })
 
 app.get('/MediumMode', (request, response) => {
+  let chooseWords = Math.floor(Math.random() * mediumWords.length)
+  hangMan.ourWord = mediumWords[chooseWords].split('')
+  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
+  console.log('our word: ', hangMan.ourWord)
   gameGet()
   response.render('MediumMode', hangMan)
 })
@@ -154,6 +163,10 @@ app.post('/EasyMode', (request, response) => {
 })
 
 app.get('/HardMode', (request, response) => {
+  let chooseWords = Math.floor(Math.random() * hardWords.length)
+  hangMan.ourWord = hardWords[chooseWords].split('')
+  hangMan.mysteryWord = hangMan.ourWord.map(x => '_')
+  console.log('our word: ', hangMan.ourWord)
   gameGet()
   response.render('HardMode', hangMan)
 })

@@ -29,6 +29,9 @@
       <h3>Letters Guessed:</h3>
       <li>{{letter}}</li>
     </ul>
+    <h3><form action="/" method="get">
+        <button>Return Home</button>
+        </form></h3>
   </div>
   </div>
 </body>
