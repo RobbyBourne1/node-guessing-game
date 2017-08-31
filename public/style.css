@@ -42,7 +42,8 @@ header {
 h1,
 h2,
 h3,
-p {
+p,
+li {
   font-size: 1.5em;
   color: rgb(12, 74, 4);
 }
@@ -122,6 +123,45 @@ li {
 
 #errorMessage {
   list-style: square;
+}
+
+.wordGuess {
+  font-size: 1.75em;
+  margin: 1em;
+}
+
+.wordGuessList {
+  margin: 0;
+}
+
+.addLetter {
+  padding: 1.5em;
+}
+
+input {
+  border: 3px solid #555;
+  height: 3em;
+  width: 10em;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+input:focus {
+  outline: 0;
+}
+
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+.guessInput {
+  background-color: #DEB57E;
+  margin: 0;
+  padding: 0;
+}
+
+.returnButton {
+  margin: 0;
 }
 
 /* Game PAge END */

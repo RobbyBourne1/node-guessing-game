@@ -18,8 +18,8 @@
     <li class="message">{{.}}</li>
     {{/messages}}
   </header>
-  <div class="formList">
-    <ul>
+  <div class="guessInput">
+    <ul class="wordGuessList">
       <li class="wordGuess">
         {{#mysteryWord}}
           {{.}}
@@ -27,13 +27,13 @@
       </li>
     </ul>
     <form class="hangman" action="/Attempt" method="Post">
-      <input class="addletter" type="text" name="letter" placeholder="Letters" autofocus="on">
+      <input class="addletter" type="text" name="letter" placeholder="Guess Letter Here" autofocus="on">
     </form>
     <ul>
       <h3>Letters Guessed:</h3>
       <li>{{letter}}</li>
     </ul>
-    <h3><form action="/" method="get">
+    <h3 class="returnButton"><form action="/" method="get">
     <button>Return Home</button>
     </form></h3>
   </div>
