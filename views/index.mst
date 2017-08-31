@@ -4,15 +4,15 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="style.css">
-  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">  <title></title>
 </head>
 
 <body>
  <div class="wrapper">
   <section>
     <header>
-      <h1>Welcome to the Wubz Guessing Game</h1>
-      <p>Please choode which mode you would like to play</p>
+      <h1>Welcome to my Word Guessing Game</h1>
+      <h3>Guess the correct word in less than 8 attempts to win.</h3>
     </header>
  </section>
  <section>
@@ -30,7 +30,8 @@
 </section>
 <section>
   <div class="emptySection">
-    <h2>Good Luck!!!</h2>
+      <h3>Please choose which mode you would like to play above</h3>
+      <h3>Good Luck!!!</h3>
   </div>
 </section>
   </div>

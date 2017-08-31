@@ -4,15 +4,16 @@
 <head>
   <meta charset="utf-8">
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet">  
   <title></title>
 </head>
 
 <body>
- <div class="wrapper">
+ <div class="wrapper-game">
   <header>
     <h1>Wubz Guessing Game</h1>
     <h2>You have {{count}} Guesses Left</h2>
-    <ul>
+    <ul id="errorMessage">
     {{#messages}}
     <li class="message">{{.}}</li>
     {{/messages}}

@@ -8,6 +8,7 @@
 html, body{
   padding: 0;
   margin: 0;
+  font-family: 'Merriweather', serif;
 }
 html{
   min-height: 100%;
@@ -21,6 +22,8 @@ section {
   background-size: cover;
   width: 100%;
 }
+
+/* Index Page Start */
 
 header {
   display: flex;
@@ -38,30 +41,34 @@ header {
 
 h1,
 h2,
+h3,
 p {
   font-size: 1.5em;
-  color: #3498db;
+  color: rgb(12, 74, 4);
 }
 
 .buttonList {
   display: flex;
   justify-content: center;
   color: #bdc3c7;
-  padding: 2em;
-  background-image: url(https://www.joshmorony.com/wp-content/uploads/2016/04/phaser-parallax-gif.gif);
+  background-image: url(https://img.itch.zone/aW1hZ2UvMTI1NzQvNDA2MjcuanBn/original/WVb7cS.jpg);
   height: 100%;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  padding: 3.5em 0; 
+  padding: 5em 0; 
 }
 
 button {
-  border-radius: 20%;
   padding: 2em;
   margin: 2em;
-  cursor: pointer; 
+  cursor: pointer;
+  border: none; 
+}
+
+button:focus {
+  outline:0;
 }
 
 #easyButton {
@@ -76,8 +83,6 @@ button {
   background-color: red;
 }
 
-/* Index Page */
-
 form {
   display: flex;
   justify-content: center;
@@ -85,11 +90,11 @@ form {
 
 input {
   background-color: #bdc3c7;
-  color: #3498db;
+  color: rgb(12, 74, 4);
 }
 
 ::-webkit-input-placeholder {
-  color: #3498db;
+  color: rgb(12, 74, 4);
 }
 
 p {
@@ -105,12 +110,19 @@ ul {
   flex-flow: column;
   align-items: center;
   padding: 0;
+  list-style: none;
 }
 
 li {
   text-transform: uppercase;
 }
 
-ul {
-  list-style: none;
+/* Index Page END */
+/* Game Page Start */
+
+#errorMessage {
+  list-style: square;
 }
+
+/* Game PAge END */
+

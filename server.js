@@ -109,7 +109,7 @@ app.post('/Attempt', (request, response) => {
   const hangMan = request.session.hangMan
 
   let letterGuess = request.body.letter.toLowerCase()
-  request.checkBody('letter', 'Please guess a letter').isAlpha()
+  request.checkBody('letter', 'You did not guess a letter').isAlpha()
   request.checkBody('letter', 'Please guess a single letter').isLength(1, 1)
   request.checkBody('letter', 'You have not guesses a letter').notEmpty()
   request.checkBody('letter', 'You have already guessed that letter').duplicate(hangMan.letter)
