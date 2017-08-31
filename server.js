@@ -56,7 +56,7 @@ const getWordBetweenLengths = (hangMan, low, high) => {
 app.get('/', (request, response) => {
   request.session.hangMan = {}
 
-  response.render('Index', request.session.hangMan)
+  response.render('index', request.session.hangMan)
 })
 
 const gameGet = (hangMan, game) => {
