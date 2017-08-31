@@ -9,21 +9,30 @@
 
 <body>
  <div class="wrapper">
-  <header>
-    <h1>Wubz Guessing Game</h1>
-    
-  </header>
-  <div class="formList">
+  <section>
+    <header>
+      <h1>Welcome to the Wubz Guessing Game</h1>
+      <p>Please choode which mode you would like to play</p>
+    </header>
+ </section>
+ <section>
+  <div class="buttonList">
     <form action="/EasyMode" method="get">
-    <button>Easy Mode</button>
+    <button id="easyButton">Easy Mode</button>
     </form>
     <form action="/MediumMode" method="get">
-    <button>Medium Mode</button>
+    <button id="mediumButton">Medium Mode</button>
     </form>
     <form action="/HardMode" method="get">
-    <button>Hard Mode</button>
+    <button id="hardButton">Hard Mode</button>
     </form>
   </div>
+</section>
+<section>
+  <div class="emptySection">
+    <h2>Good Luck!!!</h2>
+  </div>
+</section>
   </div>
 </body>
 

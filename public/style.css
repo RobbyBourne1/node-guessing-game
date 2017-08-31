@@ -5,8 +5,21 @@
   justify-content: center;
 }
 
-body {
+html, body{
+  padding: 0;
   margin: 0;
+}
+html{
+  min-height: 100%;
+}
+body{
+  min-height: 100%;
+  border: 3px solid black;
+}
+
+section {
+  background-size: cover;
+  width: 100%;
 }
 
 header {
@@ -14,7 +27,13 @@ header {
   flex-flow: column;
   align-items: center;
   background-color: #cacfd2;
-  width: 100%;
+  text-align: center;
+}
+
+.emptySection {
+  background-color: #cacfd2;
+  padding: 3em;
+  text-align: center;
 }
 
 h1,
@@ -24,11 +43,40 @@ p {
   color: #3498db;
 }
 
-.formList {
-  background-color: #3498db;
-  width: 100%;
+.buttonList {
+  display: flex;
+  justify-content: center;
   color: #bdc3c7;
+  padding: 2em;
+  background-image: url(https://www.joshmorony.com/wp-content/uploads/2016/04/phaser-parallax-gif.gif);
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 3.5em 0; 
 }
+
+button {
+  border-radius: 20%;
+  padding: 2em;
+  margin: 2em;
+  cursor: pointer; 
+}
+
+#easyButton {
+  background-color: green;
+}
+
+#mediumButton {
+  background-color: yellow;
+}
+
+#hardButton {
+  background-color: red;
+}
+
+/* Index Page */
 
 form {
   display: flex;
