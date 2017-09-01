@@ -23,6 +23,11 @@ section {
   width: 100%;
 }
 
+form {
+  padding: 0;
+  margin: 0;
+}
+
 /* Index Page Start */
 
 header {
